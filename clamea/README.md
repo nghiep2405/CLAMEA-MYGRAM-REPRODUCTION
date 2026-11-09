@@ -8,6 +8,9 @@ biến dùng chung giữa các cell vẫn có hành vi như bản gốc.
 Các output đã lưu và execution counter trong notebook đều được xóa. Dự án không
 chứa checkpoint, biểu đồ, bảng kết quả hoặc artifact sinh ra từ các lần chạy.
 
+## Folder chứa toàn bộ kết quả chạy và minh chứng chạy:
+Source folder: <https://drive.google.com/file/d/1TPScgcrvMi227GN7pqLmQ2uEmOUKBdvC/view?usp=drive_link>
+
 ## Cấu trúc
 
 - `clamea.ipynb`: entry point duy nhất để chạy toàn bộ pipeline theo thứ tự.

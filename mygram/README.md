@@ -14,6 +14,9 @@ khi bất kỳ module nào trong repository có thể được import. Các cell
 Notebook không chứa output hoặc execution counter. Dataset, checkpoint, log,
 metric, biểu đồ, báo cáo chạy và bundle sinh ra không nằm trong source tree.
 
+## Folder chứa toàn bộ kết quả chạy và minh chứng chạy:
+Source folder: <https://drive.google.com/drive/folders/1mE1PbWiXQdcLjXUpciQ0ZqgIy92DIk00?usp=sharing>
+
 ## Entry point notebook
 
 | File | Chức năng |
