@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "description": "MyGram repaired reproduction: 38 unique 1000-epoch long runs, seed 2023",
+  "defaults": {
+    "epochs": 1000,
+    "seed": 2023,
+    "device": "cuda:0",
+    "loss_batch_size": 3500,
+    "eval_every": 50,
+    "enable_il": true,
+    "il_start": 50,
+    "il_step": 5,
+    "csls_k": 3
+  },
+  "expected": {
+    "unique_long_runs": 38,
+    "repaired_pmf": 37,
+    "author_code_compat": 1,
+    "datasets": ["FBDB15K", "FBYG15K", "zh_en", "ja_en", "fr_en"]
+  },
+  "experiments": [
+    {"id": "table1_fbdb_r020", "group": "table1", "profile": "repaired_pmf", "dataset": "FBDB15K", "rate": 0.2},
+    {"id": "table1_fbdb_r050", "group": "table1", "profile": "repaired_pmf", "dataset": "FBDB15K", "rate": 0.5},
+    {"id": "table1_fbdb_r080", "group": "table1", "profile": "repaired_pmf", "dataset": "FBDB15K", "rate": 0.8},
+    {"id": "table1_fbyg_r020", "group": "table1", "profile": "repaired_pmf", "dataset": "FBYG15K", "rate": 0.2},
+    {"id": "table1_fbyg_r050", "group": "table1", "profile": "repaired_pmf", "dataset": "FBYG15K", "rate": 0.5},
+    {"id": "table1_fbyg_r080", "group": "table1", "profile": "repaired_pmf", "dataset": "FBYG15K", "rate": 0.8},
+
+    {"id": "table2_zh_en_r030", "group": "table2", "profile": "repaired_pmf", "dataset": "zh_en", "rate": 0.3},
+    {"id": "table2_ja_en_r030", "group": "table2", "profile": "repaired_pmf", "dataset": "ja_en", "rate": 0.3},
+    {"id": "table2_fr_en_r030", "group": "table2", "profile": "repaired_pmf", "dataset": "fr_en", "rate": 0.3},
+
+    {"id": "table3_fbdb_r080_no_relation", "group": "table3", "profile": "repaired_pmf", "dataset": "FBDB15K", "rate": 0.8, "overrides": {"disable_relation": true}},
+    {"id": "table3_fbdb_r080_no_attribute", "group": "table3", "profile": "repaired_pmf", "dataset": "FBDB15K", "rate": 0.8, "overrides": {"disable_attribute": true}},
+    {"id": "table3_fbdb_r080_no_image", "group": "table3", "profile": "repaired_pmf", "dataset": "FBDB15K", "rate": 0.8, "overrides": {"disable_image": true}},
+    {"id": "table3_fbyg_r080_no_relation", "group": "table3", "profile": "repaired_pmf", "dataset": "FBYG15K", "rate": 0.8, "overrides": {"disable_relation": true}},
+    {"id": "table3_fbyg_r080_no_attribute", "group": "table3", "profile": "repaired_pmf", "dataset": "FBYG15K", "rate": 0.8, "overrides": {"disable_attribute": true}},
+    {"id": "table3_fbyg_r080_no_image", "group": "table3", "profile": "repaired_pmf", "dataset": "FBYG15K", "rate": 0.8, "overrides": {"disable_image": true}},
+
+    {"id": "figure3_fbdb_r020_no_mgd", "group": "figure3", "profile": "repaired_pmf", "dataset": "FBDB15K", "rate": 0.2, "overrides": {"disable_mgd": true}},
+    {"id": "figure3_fbdb_r020_no_gram", "group": "figure3", "profile": "repaired_pmf", "dataset": "FBDB15K", "rate": 0.2, "overrides": {"disable_gram": true}},
+    {"id": "figure3_fbdb_r050_no_mgd", "group": "figure3", "profile": "repaired_pmf", "dataset": "FBDB15K", "rate": 0.5, "overrides": {"disable_mgd": true}},
+    {"id": "figure3_fbdb_r050_no_gram", "group": "figure3", "profile": "repaired_pmf", "dataset": "FBDB15K", "rate": 0.5, "overrides": {"disable_gram": true}},
+    {"id": "figure3_fbdb_r080_no_mgd", "group": "figure3", "profile": "repaired_pmf", "dataset": "FBDB15K", "rate": 0.8, "overrides": {"disable_mgd": true}},
+    {"id": "figure3_fbdb_r080_no_gram", "group": "figure3", "profile": "repaired_pmf", "dataset": "FBDB15K", "rate": 0.8, "overrides": {"disable_gram": true}},
+    {"id": "figure3_fbyg_r020_no_mgd", "group": "figure3", "profile": "repaired_pmf", "dataset": "FBYG15K", "rate": 0.2, "overrides": {"disable_mgd": true}},
+    {"id": "figure3_fbyg_r020_no_gram", "group": "figure3", "profile": "repaired_pmf", "dataset": "FBYG15K", "rate": 0.2, "overrides": {"disable_gram": true}},
+    {"id": "figure3_fbyg_r050_no_mgd", "group": "figure3", "profile": "repaired_pmf", "dataset": "FBYG15K", "rate": 0.5, "overrides": {"disable_mgd": true}},
+    {"id": "figure3_fbyg_r050_no_gram", "group": "figure3", "profile": "repaired_pmf", "dataset": "FBYG15K", "rate": 0.5, "overrides": {"disable_gram": true}},
+    {"id": "figure3_fbyg_r080_no_mgd", "group": "figure3", "profile": "repaired_pmf", "dataset": "FBYG15K", "rate": 0.8, "overrides": {"disable_mgd": true}},
+    {"id": "figure3_fbyg_r080_no_gram", "group": "figure3", "profile": "repaired_pmf", "dataset": "FBYG15K", "rate": 0.8, "overrides": {"disable_gram": true}},
+
+    {"id": "figure4_fbdb_r005", "group": "figure4", "profile": "repaired_pmf", "dataset": "FBDB15K", "rate": 0.05},
+    {"id": "figure4_fbdb_r010", "group": "figure4", "profile": "repaired_pmf", "dataset": "FBDB15K", "rate": 0.1},
+    {"id": "figure4_fbdb_r015", "group": "figure4", "profile": "repaired_pmf", "dataset": "FBDB15K", "rate": 0.15},
+    {"id": "figure4_fbdb_r025", "group": "figure4", "profile": "repaired_pmf", "dataset": "FBDB15K", "rate": 0.25},
+    {"id": "figure4_fbdb_r030", "group": "figure4", "profile": "repaired_pmf", "dataset": "FBDB15K", "rate": 0.3},
+    {"id": "figure4_fbyg_r005", "group": "figure4", "profile": "repaired_pmf", "dataset": "FBYG15K", "rate": 0.05},
+    {"id": "figure4_fbyg_r010", "group": "figure4", "profile": "repaired_pmf", "dataset": "FBYG15K", "rate": 0.1},
+    {"id": "figure4_fbyg_r015", "group": "figure4", "profile": "repaired_pmf", "dataset": "FBYG15K", "rate": 0.15},
+    {"id": "figure4_fbyg_r025", "group": "figure4", "profile": "repaired_pmf", "dataset": "FBYG15K", "rate": 0.25},
+    {"id": "figure4_fbyg_r030", "group": "figure4", "profile": "repaired_pmf", "dataset": "FBYG15K", "rate": 0.3},
+
+    {"id": "control_author_compat_fbdb_r020", "group": "optimizer_control", "profile": "author_code_compat", "dataset": "FBDB15K", "rate": 0.2}
+  ],
+  "reuse": [
+    {"id": "figure4_fbdb_r020", "source": "table1_fbdb_r020", "group": "figure4"},
+    {"id": "figure4_fbyg_r020", "source": "table1_fbyg_r020", "group": "figure4"}
+  ]
+}

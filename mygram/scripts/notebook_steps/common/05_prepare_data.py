@@ -1,0 +1,1 @@
+subprocess.run([sys.executable, 'scripts/colab_bootstrap.py', '--archive', str(PMF_ARCHIVE), '--data-root', '/content/mygram_data', '--cache-root', '/content/mygram_cache', '--validation-root', '/content/mygram_validation', '--report', str(DRIVE_ROOT / 'environment/latest_bootstrap.json')], check=True)

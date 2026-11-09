@@ -1,0 +1,224 @@
+{
+  "schema_version": 1,
+  "workflows": {
+    "base": {
+      "notebook": "notebooks/MyGram_Colab.ipynb",
+      "bootstrap": [
+        {
+          "cell": 1,
+          "sha256": "094161b0ba2f96138ba99e3804de6315551a0d1763379f4ec12972aca07b1100"
+        },
+        {
+          "cell": 2,
+          "sha256": "d456df4e901311cfdbe89d406916b14f7704e2ea7d279319c1efc899ea7bc4e4"
+        }
+      ],
+      "steps": [
+        {
+          "source_cell": 3,
+          "path": "scripts/notebook_steps/common/03_install_dependencies.py",
+          "title": "Install locked dependencies",
+          "sha256": "cf003414108b5b1ea81b2ec1b7a14d231be48e8850a02f989a7b361d024b9b76"
+        },
+        {
+          "source_cell": 4,
+          "path": "scripts/notebook_steps/common/04_check_environment.py",
+          "title": "Validate the Colab environment",
+          "sha256": "a706351d63d5d568ccf1bec43e95dfe2f18f6754ea9be1f27bc5e3ce49f2b90a"
+        },
+        {
+          "source_cell": 5,
+          "path": "scripts/notebook_steps/common/05_prepare_data.py",
+          "title": "Prepare the verified PMF data",
+          "sha256": "0c870f6af7cb57869c97e8bdaf5f3e756a0c5ed82f893852772bcee802aabb35"
+        },
+        {
+          "source_cell": 6,
+          "path": "scripts/notebook_steps/base/06_run_unit_tests.py",
+          "title": "Run the repository test suite",
+          "sha256": "04f1d6674102daf571c76f8cf6cf3b926b3ad3200c4158bfb647a7a9efc1e585"
+        },
+        {
+          "source_cell": 8,
+          "path": "scripts/notebook_steps/base/08_gate_g3.py",
+          "title": "Run CUDA gate G3",
+          "sha256": "8202ed2263d39952e6467e026932fd565ecf5f19c17b45fb989a986d84d8be22"
+        },
+        {
+          "source_cell": 9,
+          "path": "scripts/notebook_steps/base/09_gate_g4.py",
+          "title": "Run CUDA gate G4",
+          "sha256": "c3f506911d6e86c8f63685cc7edf08b2b54370eb2993967d3623f8a7839c64f2"
+        },
+        {
+          "source_cell": 10,
+          "path": "scripts/notebook_steps/base/10_gate_g6.py",
+          "title": "Run pilot/resume gate G6",
+          "sha256": "f1a5e08db51aa59a206d12cdd4b6c3ef55fa3980ecca3f1d46973d0befd77aa2"
+        },
+        {
+          "source_cell": 12,
+          "path": "scripts/notebook_steps/base/12_run_matrix.py",
+          "title": "Run or resume the experiment matrix",
+          "sha256": "70fc9a942f78aa2b09ee70c85be7b5dbd3ba51ff430190263c99e039d82f167e"
+        },
+        {
+          "source_cell": 13,
+          "path": "scripts/notebook_steps/base/13_show_matrix_status.py",
+          "title": "Display matrix status",
+          "sha256": "eecf0946b4c512a64b76cc788b6abd061bac1d38adabf308eb601e9ffdd8a0b3"
+        }
+      ]
+    },
+    "table1": {
+      "notebook": "notebooks/table_runs/MyGram_Table1_RunAll.ipynb",
+      "bootstrap": [
+        {
+          "cell": 1,
+          "sha256": "094161b0ba2f96138ba99e3804de6315551a0d1763379f4ec12972aca07b1100"
+        },
+        {
+          "cell": 2,
+          "sha256": "d456df4e901311cfdbe89d406916b14f7704e2ea7d279319c1efc899ea7bc4e4"
+        }
+      ],
+      "steps": [
+        {
+          "source_cell": 3,
+          "path": "scripts/notebook_steps/common/03_install_dependencies.py",
+          "title": "Install locked dependencies",
+          "sha256": "cf003414108b5b1ea81b2ec1b7a14d231be48e8850a02f989a7b361d024b9b76"
+        },
+        {
+          "source_cell": 4,
+          "path": "scripts/notebook_steps/common/04_check_environment.py",
+          "title": "Validate the Colab environment",
+          "sha256": "a706351d63d5d568ccf1bec43e95dfe2f18f6754ea9be1f27bc5e3ce49f2b90a"
+        },
+        {
+          "source_cell": 5,
+          "path": "scripts/notebook_steps/common/05_prepare_data.py",
+          "title": "Prepare the verified PMF data",
+          "sha256": "0c870f6af7cb57869c97e8bdaf5f3e756a0c5ed82f893852772bcee802aabb35"
+        },
+        {
+          "source_cell": 7,
+          "path": "scripts/notebook_steps/table_common/07_patch_checkpointing.py",
+          "title": "Apply checkpoint optimization",
+          "sha256": "0a0f83b36265b18df1643dd6e5ff22721e0c4299d1979acbdc0fb57a8cfb7582"
+        },
+        {
+          "source_cell": 8,
+          "path": "scripts/notebook_steps/table_common/08_record_patch_diff.py",
+          "title": "Record checkpoint patch provenance",
+          "sha256": "78baed11b034922bc604f579078f2cf025ef3cc37610319e1498b13d19b01937"
+        },
+        {
+          "source_cell": 10,
+          "path": "scripts/notebook_steps/table_common/10_validate_patch.py",
+          "title": "Validate the patched source",
+          "sha256": "c0b061a030634fbab85759438c011ccdc73a312e08d9832d461625c34560dc28"
+        },
+        {
+          "source_cell": 12,
+          "path": "scripts/notebook_steps/table_common/12_clear_stale_lock.py",
+          "title": "Clear a stale runtime lock",
+          "sha256": "b17f44777c14f2f32a9bfb6c45dc0e6f55dab369ae308c0c20bc76e44912430c"
+        },
+        {
+          "source_cell": 13,
+          "path": "scripts/notebook_steps/table1/13_run_missing_experiments.py",
+          "title": "Run or resume missing Table 1 experiments",
+          "sha256": "37b786d5777dcf8924dfd406fe8e04696813e89b7efb5e484ac0a8d625e36ff8"
+        },
+        {
+          "source_cell": 15,
+          "path": "scripts/notebook_steps/table1/15_build_report.py",
+          "title": "Build the Table 1 report",
+          "sha256": "8b9d20ab6fb894781e201da105ed7e068696fc726d0e29453e49e026fe20e62e"
+        },
+        {
+          "source_cell": 16,
+          "path": "scripts/notebook_steps/table1/16_final_status.py",
+          "title": "Publish final Table 1 status",
+          "sha256": "e4b69def261c3490851610a20a2d3faa8507e8311b16135318cad897585c7ac5"
+        }
+      ]
+    },
+    "table2": {
+      "notebook": "notebooks/table_runs/MyGram_Table2_RunAll.ipynb",
+      "bootstrap": [
+        {
+          "cell": 1,
+          "sha256": "094161b0ba2f96138ba99e3804de6315551a0d1763379f4ec12972aca07b1100"
+        },
+        {
+          "cell": 2,
+          "sha256": "d456df4e901311cfdbe89d406916b14f7704e2ea7d279319c1efc899ea7bc4e4"
+        }
+      ],
+      "steps": [
+        {
+          "source_cell": 3,
+          "path": "scripts/notebook_steps/common/03_install_dependencies.py",
+          "title": "Install locked dependencies",
+          "sha256": "cf003414108b5b1ea81b2ec1b7a14d231be48e8850a02f989a7b361d024b9b76"
+        },
+        {
+          "source_cell": 4,
+          "path": "scripts/notebook_steps/common/04_check_environment.py",
+          "title": "Validate the Colab environment",
+          "sha256": "a706351d63d5d568ccf1bec43e95dfe2f18f6754ea9be1f27bc5e3ce49f2b90a"
+        },
+        {
+          "source_cell": 5,
+          "path": "scripts/notebook_steps/common/05_prepare_data.py",
+          "title": "Prepare the verified PMF data",
+          "sha256": "0c870f6af7cb57869c97e8bdaf5f3e756a0c5ed82f893852772bcee802aabb35"
+        },
+        {
+          "source_cell": 7,
+          "path": "scripts/notebook_steps/table_common/07_patch_checkpointing.py",
+          "title": "Apply checkpoint optimization",
+          "sha256": "0a0f83b36265b18df1643dd6e5ff22721e0c4299d1979acbdc0fb57a8cfb7582"
+        },
+        {
+          "source_cell": 8,
+          "path": "scripts/notebook_steps/table_common/08_record_patch_diff.py",
+          "title": "Record checkpoint patch provenance",
+          "sha256": "78baed11b034922bc604f579078f2cf025ef3cc37610319e1498b13d19b01937"
+        },
+        {
+          "source_cell": 10,
+          "path": "scripts/notebook_steps/table_common/10_validate_patch.py",
+          "title": "Validate the patched source",
+          "sha256": "c0b061a030634fbab85759438c011ccdc73a312e08d9832d461625c34560dc28"
+        },
+        {
+          "source_cell": 12,
+          "path": "scripts/notebook_steps/table_common/12_clear_stale_lock.py",
+          "title": "Clear a stale runtime lock",
+          "sha256": "b17f44777c14f2f32a9bfb6c45dc0e6f55dab369ae308c0c20bc76e44912430c"
+        },
+        {
+          "source_cell": 13,
+          "path": "scripts/notebook_steps/table2/13_run_experiments.py",
+          "title": "Run or resume Table 2 experiments",
+          "sha256": "deb67b9000bb721675a6f0dd048a1cfd03f37363ce0abdbba9ada8fc7652a1f8"
+        },
+        {
+          "source_cell": 15,
+          "path": "scripts/notebook_steps/table2/15_build_report.py",
+          "title": "Build the Table 2 report",
+          "sha256": "cea72c6ad76b622f872970132a6c874de84269e48e9a51ed366423850645a979"
+        },
+        {
+          "source_cell": 16,
+          "path": "scripts/notebook_steps/table2/16_final_status.py",
+          "title": "Publish final Table 2 status",
+          "sha256": "8017ed4c35b6520de3d550a8a14daf5be9beb931379abc485ed55ad496f2b1e3"
+        }
+      ]
+    }
+  }
+}

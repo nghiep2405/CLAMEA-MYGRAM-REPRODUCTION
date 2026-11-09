@@ -1,0 +1,1 @@
+subprocess.run([sys.executable, 'scripts/run_colab_gates.py', '--gate', 'g4', '--data-root', '/content/mygram_data', '--work-root', '/content/mygram_work/gates', '--store-root', str(DRIVE_ROOT / 'runs/pilots/g4'), '--device', 'cuda:0', '--gradient-checkpointing'], check=True)

@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Local experiment artifacts are reproducible and must not be committed.
+*.ckpt
+*.log
+*.pkl
+*.pt
+*.pth
+*.zip
+wandb/
+results/
+runs/

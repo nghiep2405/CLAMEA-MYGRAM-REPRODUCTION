@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.pyc
+data/
+outputs/
+dist/
+audit/
+.ipynb_checkpoints/
+.pytest_cache/
+*.ckpt
+*.log
+*.pkl
+*.pt
+*.pth
+*.zip
+wandb/

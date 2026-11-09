@@ -1,0 +1,189 @@
+{
+  "version": 1,
+  "stages": [
+    {
+      "order": 0,
+      "source_cell": 0,
+      "path": "scripts/00_environment.py",
+      "title": "Environment bootstrap",
+      "description": "Imports, constants, reproducibility helpers, and runtime information.",
+      "sha256": "d0f5eff1f91882920c7e0f655cfca4e2c1576b82eb15a238749aabd0dd575a96"
+    },
+    {
+      "order": 1,
+      "source_cell": 1,
+      "path": "scripts/01_data_setup.py",
+      "title": "Dataset setup",
+      "description": "Google Drive connection, archive verification, extraction, and split checks.",
+      "sha256": "9a6a86fdb651cf0c4611084654d19c7af24a4254b205646c0321f448e65f649a"
+    },
+    {
+      "order": 2,
+      "source_cell": 2,
+      "path": "scripts/02_upstream_patch.py",
+      "title": "Upstream source patching",
+      "description": "Dependency setup, pinned CLAMEA checkout, and source patches.",
+      "sha256": "6dcbab462dc9a3c998eab2a86ac995251e31dcd6e3cbd1c8545aa528d8564974"
+    },
+    {
+      "order": 3,
+      "source_cell": 3,
+      "path": "scripts/03_smoke_test.py",
+      "title": "GPU smoke test",
+      "description": "Model construction, backward pass, and exact-ranking oracle checks.",
+      "sha256": "71a415c0d2781584bac2eb91c3fa7654131e22720710d9e02a5a5ec12bb7e220"
+    },
+    {
+      "order": 4,
+      "source_cell": 4,
+      "path": "scripts/04_preflight_report.py",
+      "title": "Preflight report",
+      "description": "Technical preflight report creation and Drive upload.",
+      "sha256": "daae9b57091186c51b64c147f5449958a241886fca55261ada6a2794b5200955"
+    },
+    {
+      "order": 5,
+      "source_cell": 5,
+      "path": "scripts/05_training_runner.py",
+      "title": "Training runner generation",
+      "description": "Builds the standalone training runner used by later stages.",
+      "sha256": "6f2a476b2d072a741d23ae2ab8e7e646507258a78df15f76c3caf7c70522ed42"
+    },
+    {
+      "order": 6,
+      "source_cell": 6,
+      "path": "scripts/06_training_execution.py",
+      "title": "Training execution",
+      "description": "Locked/resumable baseline training orchestration.",
+      "sha256": "61dd21e5fa422b8320006590d5d0f24c3b9f26bb27c9563d326d2831ea831110"
+    },
+    {
+      "order": 7,
+      "source_cell": 7,
+      "path": "scripts/07_pseudo_label_audit.py",
+      "title": "Pseudo-label audit",
+      "description": "Audits pseudo-label quality without training or test-label selection.",
+      "sha256": "07c736ba3f55f2839735a7c7c8d3dbbc74757377c240fc7bef41d7baaea54733"
+    },
+    {
+      "order": 8,
+      "source_cell": 8,
+      "path": "scripts/08_evaluation_stability.py",
+      "title": "Evaluation stability",
+      "description": "Checks checkpoint and repeated-evaluation stability.",
+      "sha256": "6cc45f711c0e9fbefdb731a9e24a631357624f290765e5e9412fa6f8a77e7689"
+    },
+    {
+      "order": 9,
+      "source_cell": 9,
+      "path": "scripts/09_training_reproducibility.py",
+      "title": "Training reproducibility",
+      "description": "Runs the short reproducibility diagnostic.",
+      "sha256": "105f9bc2c36368524fde18bb4452ac6a3d6aa4a22b57c5f8ffe0fc8c9338a54c"
+    },
+    {
+      "order": 10,
+      "source_cell": 10,
+      "path": "scripts/10_deterministic_training.py",
+      "title": "Deterministic training",
+      "description": "Isolates and tests deterministic negative sampling.",
+      "sha256": "601226ab2e8f2a3fa5faf23d3cd587e6b25fcc5f17f05f12559707268c15c7da"
+    },
+    {
+      "order": 11,
+      "source_cell": 11,
+      "path": "scripts/11_controlled_self_training.py",
+      "title": "Controlled self-training",
+      "description": "Runs controlled deterministic self-training diagnostics.",
+      "sha256": "c205865e68378c2a678b807a994aeb8a51e087f12671a4724cbf3dbd76399de3"
+    },
+    {
+      "order": 12,
+      "source_cell": 12,
+      "path": "scripts/12_root_cause_isolation.py",
+      "title": "Root-cause isolation",
+      "description": "Separates candidate causes of reproducibility differences.",
+      "sha256": "cc93c41341c09bc28f72b562d494379c9e89b4a5c4145a27d2a2150fedaa1da1"
+    },
+    {
+      "order": 13,
+      "source_cell": 13,
+      "path": "scripts/13_graph_augmentation.py",
+      "title": "Graph augmentation diagnosis",
+      "description": "Diagnoses graph augmentation behavior in an isolated workspace.",
+      "sha256": "cd1e9597945948889274e16055f013887c4c2b3bc1b32fd534a0a72fbd3473dc"
+    },
+    {
+      "order": 14,
+      "source_cell": 14,
+      "path": "scripts/14_final_preflight.py",
+      "title": "Final reproduction preflight",
+      "description": "Freezes and verifies the final reproduction protocol.",
+      "sha256": "371631f81ff5c70229ff444163b402c9c98198d114e848b0f24c77bab4c4fc1f"
+    },
+    {
+      "order": 15,
+      "source_cell": 15,
+      "path": "scripts/15_dependency_check.py",
+      "title": "Dependency check",
+      "description": "Checks FAISS and imports the patched CLAMEA source.",
+      "sha256": "7b917ab5f318b364856f7a27e5b0ca9e37b84d8e1ee2ea031fa3449c78032169"
+    },
+    {
+      "order": 16,
+      "source_cell": 16,
+      "path": "scripts/16_stage5_training.py",
+      "title": "Stage 5 training",
+      "description": "Runs one frozen Stage 5 training job per invocation.",
+      "sha256": "b0d1c0d92fb756f0fdb12a0d48761c4a98d44c810b05bf2f937147f94a0a3b64"
+    },
+    {
+      "order": 17,
+      "source_cell": 17,
+      "path": "scripts/17_integrity_audit.py",
+      "title": "Run integrity audit",
+      "description": "Audits the nine completed runs without training or test evaluation.",
+      "sha256": "8909edbacf1f5ba25657a70bcd9f7cce8d530168739808f326a13d5ca05abc08"
+    },
+    {
+      "order": 18,
+      "source_cell": 18,
+      "path": "scripts/18_final_test_evaluation.py",
+      "title": "Final test evaluation",
+      "description": "Evaluates nine frozen validation-selected checkpoints on Test.",
+      "sha256": "e2b131d02a4124a15fb90bb8ea1bf568c8655e1daa0c985e9bdea2dfa84bde8b"
+    },
+    {
+      "order": 19,
+      "source_cell": 19,
+      "path": "scripts/19_final_analysis.py",
+      "title": "Final reproduction analysis",
+      "description": "Builds aggregate tables, plots, and narrative from frozen artifacts.",
+      "sha256": "7045d07be3cf9cf2c763842c8018d81c145165597e8f76209b5569f39374b033"
+    },
+    {
+      "order": 20,
+      "source_cell": 20,
+      "path": "scripts/20_wandb_history_upload.py",
+      "title": "W&B history upload",
+      "description": "Publishes existing frozen historical results to W&B.",
+      "sha256": "45825de10f0f62659921a028fc86305d417ffa9378fee2bbe8e93d16a8d22ead"
+    },
+    {
+      "order": 21,
+      "source_cell": 21,
+      "path": "scripts/21_wandb_report_table.py",
+      "title": "W&B report table",
+      "description": "Safely inserts the rendered results table into an existing report.",
+      "sha256": "39c8faf11a1e5d14bbbfd58c10865921c5447844ab8614f0d3d08172889039bf"
+    },
+    {
+      "order": 22,
+      "source_cell": 22,
+      "path": "scripts/22_wandb_report_evidence.py",
+      "title": "W&B report evidence",
+      "description": "Adds complete nine-run evidence to the existing report.",
+      "sha256": "8860bc3cf539ecf1461ada8c442b977c72c023f5fa896e948e76b36195adde5f"
+    }
+  ]
+}

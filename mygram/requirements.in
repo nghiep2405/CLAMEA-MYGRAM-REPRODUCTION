@@ -1,0 +1,9 @@
+# Native torch backend planned in stage D; upstream DGL/torch-scatter imports
+# remain unresolved until stages C/D. This is NOT an upstream runtime lock.
+torch==2.7.1
+numpy==2.2.5
+scipy==1.15.3
+transformers==4.51.3
+tqdm==4.67.1
+# Used by scripts/check_environment.py for portable RAM inventory.
+psutil==7.2.2

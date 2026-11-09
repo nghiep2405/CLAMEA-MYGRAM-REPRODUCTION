@@ -1,0 +1,229 @@
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+from .Mfusion import MCD, MFusion
+
+
+class RRGAT(nn.Module):
+    def __init__(
+        self, args,node_size, rel_size, triple_size, node_dim, depth=1, mr_fusion_type=0
+    ):
+        super(RRGAT, self).__init__()
+
+        self.args=args
+        self.node_size = node_size
+        self.rel_size = rel_size
+        self.triple_size = triple_size
+        self.node_dim = node_dim
+        self.activation = torch.nn.Tanh()
+        self.depth = depth
+        self.attn_kernels = nn.ParameterList()
+        self.fusion_type = mr_fusion_type
+
+
+        for l in range(self.depth):
+            attn_kernel = torch.nn.Parameter(
+                data=torch.empty(self.node_dim, 1, dtype=torch.float32)
+            )
+            nn.init.xavier_uniform_(attn_kernel)
+            self.attn_kernels.append(attn_kernel)
+    def forward(self, inputs):
+        outputs = []
+        features = inputs[0]
+        rel_emb = inputs[1]
+        adj = inputs[2]
+        r_index = inputs[3]
+        r_val = inputs[4]
+
+        features = self.activation(features)
+        outputs.append(features)
+
+        for l in range(self.depth):
+            attention_kernel = self.attn_kernels[l]
+            tri_rel = torch.sparse_coo_tensor(
+                indices=r_index,
+                values=r_val,
+                size=[self.triple_size, self.rel_size],
+                dtype=torch.float32,
+            )
+            tri_rel = torch.sparse.mm(tri_rel, rel_emb)
+            neighs = features[adj[1, :].long()]
+            tri_rel = F.normalize(tri_rel, dim=1, p=2)
+
+            neighs = (
+                neighs - 2 * torch.sum(neighs * tri_rel, dim=1, keepdim=True) * tri_rel
+            )
+
+            att = torch.squeeze(torch.mm(tri_rel, attention_kernel), dim=-1)
+            att = torch.sparse_coo_tensor(
+                indices=adj, values=att, size=[self.node_size, self.node_size]
+            )
+            att = torch.sparse.softmax(att, dim=1).coalesce()
+            if not torch.equal(att.indices(), adj):
+                raise RuntimeError('RRGAT edge order is not canonical')
+
+            weighted = neighs * torch.unsqueeze(att.values(), dim=-1)
+            new_features = torch.zeros(
+                (self.node_size, weighted.shape[1]),
+                dtype=weighted.dtype,
+                device=weighted.device,
+            )
+            new_features.index_add_(0, att.indices()[0].long(), weighted)
+            features = self.activation(new_features)
+            outputs.append(features)
+        outputs = torch.cat(outputs, dim=-1)
+        final_outputs = outputs
+        return final_outputs
+
+class MultiModalEncoderMrFusion(nn.Module):
+    """
+    entity embedding: (ent_num, input_dim)
+    gcn layer: n_units
+
+    """
+
+    def __init__(
+        self,
+        args,
+        ent_num,
+        rel_size,
+        triple_size,
+        img_feature_dim,
+        adj_matrix,
+        r_index,
+        r_val,
+        rel_matrix,
+        ent_matrix,
+        mcd_operator,
+        char_feature_dim=None,
+        use_project_head=False,
+        left_ents=None,
+        right_ents=None,
+    ):
+        super(MultiModalEncoderMrFusion, self).__init__()
+
+        self.args = args
+        attr_dim = self.args.attr_dim
+        img_dim = self.args.img_dim
+        self.ENT_NUM = ent_num
+        self.use_project_head = use_project_head
+
+        self.n_units = [int(x) for x in self.args.hidden_units.strip().split(",")]
+        self.n_heads = [int(x) for x in self.args.heads.strip().split(",")]
+        self.input_dim = int(self.args.hidden_units.strip().split(",")[0])
+
+        self.rel_fc = nn.Linear(args.bow_size, attr_dim)
+        self.att_fc = nn.Linear(args.bow_size, attr_dim)
+        self.img_fc = nn.Linear(img_feature_dim, img_dim)
+
+        self.left_ents = left_ents
+        self.right_ents = right_ents
+        if "Dualmodal" in self.args.structure_encoder:
+            self.node_hidden = self.input_dim
+            self.rel_hidden = self.input_dim
+            self.node_size = ent_num
+            self.rel_size = rel_size
+            self.triple_size = triple_size
+            self.depth = args.rrgat_depth
+            self.register_buffer('adj_list', adj_matrix)
+            self.register_buffer('r_index', r_index)
+            self.register_buffer('r_val', r_val)
+            self.rel_adj = rel_matrix
+            self.register_buffer('ent_adj', ent_matrix)
+            self.register_buffer('mcd_operator', mcd_operator)
+            self.dropout = nn.Dropout(args.dropout)
+
+            self.mr_fusion_type = self.args.mr_fusion_type
+            self.final_fusion_type = self.args.final_fusion_type
+
+            self.ent_embedding = nn.Embedding(self.node_size, self.node_hidden)
+            self.rel_embedding = nn.Embedding(self.rel_size, self.rel_hidden)
+            self.rel_fc_dual = nn.Linear(self.rel_size, self.rel_hidden)
+            nn.init.xavier_uniform_(self.ent_embedding.weight)
+            nn.init.xavier_uniform_(self.rel_embedding.weight)
+
+            self.e_encoder = RRGAT(
+                args=self.args,
+                node_size=self.node_size,
+                rel_size=self.rel_size,
+                triple_size=self.triple_size,
+                node_dim=self.node_hidden,
+                depth=self.depth,
+                mr_fusion_type=self.mr_fusion_type,
+            )
+        self.fusion1 = MFusion(args, modal_num=3,
+                                        with_weight=1)
+
+        self.MCD = MCD(
+            k=args.mcd_k,
+            alpha=args.mcd_alpha,
+            beta=args.mcd_beta,
+            x_drop_rate=0.0,
+            edge_drop_rate=0.0,
+            z_drop_rate=args.dropout,
+        )
+
+
+    def avg(self, adj, emb, size: int):
+        return torch.sparse.mm(adj, emb)
+
+    def forward(
+        self,
+        input_idx,
+        img_features=None,
+        rel_features=None,
+        att_features=None,
+        name_features=None,
+        char_features=None,
+    ):
+
+        if self.args.w_img:
+            img_emb = self.img_fc(img_features)
+        else:
+            img_emb = None
+        if self.args.w_rel:
+            rel_emb = self.rel_fc(rel_features)
+        else:
+            rel_emb = None
+        if self.args.w_attr:
+            att_emb = self.att_fc(att_features)
+        else:
+            att_emb = None
+
+
+        emb_dict = {"relation": rel_emb, "attribute": att_emb, "image": img_emb}
+        if self.args.disable_mgd:
+            enhanced_emb_dict = emb_dict
+        else:
+            enhanced_emb_dict = self.MCD(self.mcd_operator, emb_dict)
+        rel_emb = enhanced_emb_dict['relation']
+        att_emb = enhanced_emb_dict['attribute']
+        img_emb = enhanced_emb_dict['image']
+
+        if self.args.w_gcn:
+            if self.args.structure_encoder == "Dualmodal-joint-LMF":
+                joint_emb = []
+                if img_emb is not None:
+                    joint_emb.append(img_emb)
+
+                if rel_emb is not None:
+                    joint_emb.append(rel_emb)
+    
+                if att_emb is not None:
+                    joint_emb.append(att_emb)
+
+                ent_feature = self.avg(self.ent_adj, self.ent_embedding.weight, self.node_size)
+                opt = [self.rel_embedding.weight, self.adj_list, self.r_index, self.r_val]
+                gph_emb1=ent_feature
+                gph_emb = self.e_encoder([ent_feature] + opt)
+
+                if self.final_fusion_type == -1:
+                    joint_emb = gph_emb
+                else:
+                    joint_emb = self.fusion1(joint_emb)
+                    joint_emb = torch.cat([gph_emb, joint_emb], dim=-1)
+        else:
+            gph_emb = None
+        name_emb, char_emb = None, None
+        return gph_emb1, gph_emb, img_emb, rel_emb, att_emb, name_emb, char_emb, joint_emb
